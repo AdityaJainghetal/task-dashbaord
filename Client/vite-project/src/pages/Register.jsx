@@ -6,7 +6,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
-    role: 'user' // Default role
+    role: 'user' 
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -26,7 +26,6 @@ const Register = () => {
     setLoading(true);
     setError('');
 
-    // Basic validation
     if (!formData.username || !formData.password) {
       setError('Please fill all fields');
       setLoading(false);
@@ -40,14 +39,12 @@ const Register = () => {
         }
       });
 
-      // Registration successful
       setSuccess(true);
       setTimeout(() => {
         navigate('/login');
       }, 2000);
 
     } catch (err) {
-      // Axios wraps the error response in err.response
       const errorMessage = err.response?.data?.message || 'Registration failed. Please try again.';
       setError(errorMessage);
     } finally {

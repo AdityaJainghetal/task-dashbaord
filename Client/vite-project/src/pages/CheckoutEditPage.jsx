@@ -92,7 +92,7 @@ const CheckoutEditPage = () => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:7002/admin/checkout/${id}`, checkout);
-      navigate(`/admin/checkout/${id}`); // Redirect to view page after update
+      navigate(`/admin/checkout/${id}`);
     } catch (err) {
       setError('Failed to update checkout page');
     }

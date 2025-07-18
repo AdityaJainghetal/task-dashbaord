@@ -30,13 +30,12 @@ const CheckoutBuilder = () => {
   const [previewUrl, setPreviewUrl] = useState('');
   const navigate = useNavigate();
 
-  // Handle input changes
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setDesign(prev => ({ ...prev, [name]: value }));
   };
 
-  // Toggle form fields
   const handleFormFieldToggle = (field) => {
     setDesign(prev => ({
       ...prev,
@@ -44,7 +43,6 @@ const CheckoutBuilder = () => {
     }));
   };
 
-  // Handle UTM parameter changes
   const handleUtmChange = (e) => {
     const { name, value } = e.target;
     setDesign(prev => ({
@@ -53,7 +51,6 @@ const CheckoutBuilder = () => {
     }));
   };
 
-  // Handle image upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -65,7 +62,6 @@ const CheckoutBuilder = () => {
     }
   };
 
-  // Generate preview URL
   const generatePreviewUrl = () => {
     const params = new URLSearchParams();
     Object.entries(design.utmParams).forEach(([key, value]) => {
@@ -74,7 +70,6 @@ const CheckoutBuilder = () => {
     return `${window.location.origin}/checkout/preview?${params.toString()}`;
   };
 
-  // Save design to API
   const handleSave = async () => {
     setLoading(true);
     setError('');
@@ -113,7 +108,6 @@ const response = await fetch("http://localhost:7002/api/checkout-pages", {
         throw new Error(data.message || 'Failed to save design');
       }
 
-      // Update preview URL after save
       setPreviewUrl(generatePreviewUrl());
       alert('Design saved successfully!');
       
@@ -124,7 +118,6 @@ const response = await fetch("http://localhost:7002/api/checkout-pages", {
     }
   };
 
-  // Reset form
   const handleReset = () => {
     if (window.confirm('Are you sure you want to reset all changes?')) {
       setDesign({

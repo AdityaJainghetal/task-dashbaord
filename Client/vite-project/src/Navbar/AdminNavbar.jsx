@@ -10,7 +10,7 @@ const AdminNavbar = () => {
     <nav className="bg-gray-800 shadow-lg">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between">
-          {/* Logo */}
+       
           <div className="flex space-x-7">
             <div>
               <Link to="/" className="flex items-center py-4 px-2">
@@ -18,7 +18,6 @@ const AdminNavbar = () => {
               </Link>
             </div>
 
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1">
               <NavLink to="/display">Home</NavLink>
               <NavLink to="/checkout">Add</NavLink>
@@ -33,7 +32,6 @@ const AdminNavbar = () => {
             </div>
           </div>
 
-          {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-3">
             {currentUser ? (
               <>
@@ -65,7 +63,6 @@ const AdminNavbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="outline-none">
               <svg
@@ -84,7 +81,6 @@ const AdminNavbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
         <ul className="bg-gray-700">
           <MobileNavLink to="/display">Home</MobileNavLink>
@@ -111,7 +107,6 @@ const AdminNavbar = () => {
   );
 };
 
-// Desktop NavLink
 const NavLink = ({ to, children }) => (
   <Link
     to={to}
@@ -121,7 +116,7 @@ const NavLink = ({ to, children }) => (
   </Link>
 );
 
-// Mobile NavLink
+
 const MobileNavLink = ({ to, children }) => (
   <li>
     <Link

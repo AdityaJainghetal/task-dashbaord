@@ -418,7 +418,6 @@ const CheckoutViewPage = () => {
               </div>
             ) : (
               <>
-                {/* Header Section */}
                 <div className="border-b pb-4 mb-6">
                   <h2 className="text-xl font-bold text-gray-800">{checkout.title}</h2>
                   <p className="text-gray-500">
@@ -426,7 +425,6 @@ const CheckoutViewPage = () => {
                   </p>
                 </div>
 
-                {/* Product Info */}
                 {checkout.product?.image && (
                   <div className="mb-4">
                     <h3 className="text-lg font-semibold mb-2 text-gray-700">Product Image</h3>
@@ -451,8 +449,6 @@ const CheckoutViewPage = () => {
                     </p>
                   </div>
                 </div>
-
-                {/* Color Preview */}
                 <div className="mb-4">
                   <h3 className="text-lg font-semibold mb-2 text-gray-700">Colors</h3>
                   <div className="flex space-x-4">
@@ -516,19 +512,17 @@ const CheckoutViewPage = () => {
                   </div>
                 </div>
 
-                {/* Button Text */}
                 <div className="mb-4">
                   <h3 className="text-lg font-semibold mb-2 text-gray-700">Button Text</h3>
                   <p className="bg-gray-100 p-2 rounded">{checkout.buttonText}</p>
                 </div>
 
-                {/* Font */}
+               
                 <div className="mb-4">
                   <h3 className="text-lg font-semibold mb-2 text-gray-700">Font</h3>
                   <p className="bg-gray-100 p-2 rounded">{checkout.font}</p>
                 </div>
 
-                {/* UTM Parameters */}
                 <div className="mb-6">
                   <h3 className="text-lg font-semibold mb-2 text-gray-700">UTM Parameters</h3>
                   <div className="bg-gray-50 p-4 rounded-lg">
@@ -541,14 +535,9 @@ const CheckoutViewPage = () => {
                   </div>
                 </div>
 
-                {/* Action Buttons */}
+                
                 <div className="flex space-x-4">
-                  {/* <button
-                    onClick={() => handlePreview(checkout._id)}
-                    className="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
-                  >
-                    Preview
-                  </button> */}
+               
                   <button
                     onClick={() => handleEdit(checkout)}
                     className="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-md hover:bg-yellow-200 transition-colors"
