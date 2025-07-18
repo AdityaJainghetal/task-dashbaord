@@ -543,12 +543,12 @@ const CheckoutViewPage = () => {
 
                 {/* Action Buttons */}
                 <div className="flex space-x-4">
-                  <button
+                  {/* <button
                     onClick={() => handlePreview(checkout._id)}
                     className="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
                   >
                     Preview
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => handleEdit(checkout)}
                     className="px-4 py-2 bg-yellow-100 text-yellow-700 rounded-md hover:bg-yellow-200 transition-colors"
