@@ -8,7 +8,7 @@ Use these credentials to log in as admin:
 
 | Field    | Value                                     |
 | -------- | ----------------------------------------- |
-| Email    | [admin@admin.com](mailto:admin@admin.com) |
+| Email    | [admin] |
 | Password | 123456                                    |
 
 This account grants access to all admin-only features and routes.
