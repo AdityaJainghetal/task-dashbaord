@@ -6,7 +6,6 @@ const CheckoutBuilder = () => {
     pageTitle: '',
     productName: '',
     productPrice: '',
-    productImage: '',
     buttonText: 'Buy Now',
     primaryColor: '#3b82f6',
     secondaryColor: '#ffffff',
@@ -51,16 +50,7 @@ const CheckoutBuilder = () => {
     }));
   };
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setDesign(prev => ({ ...prev, productImage: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+
 
   const generatePreviewUrl = () => {
     const params = new URLSearchParams();
@@ -88,7 +78,7 @@ const response = await fetch("http://localhost:7002/api/checkout-pages", {
     product: {
       name: design.productName,
       price: design.productPrice,
-      image: design.productImage,
+      
     },
     buttonText: design.buttonText,
     colors: {
@@ -124,7 +114,7 @@ const response = await fetch("http://localhost:7002/api/checkout-pages", {
         pageTitle: '',
         productName: '',
         productPrice: '',
-        productImage: '',
+  
         buttonText: 'Buy Now',
         primaryColor: '#3b82f6',
         secondaryColor: '#ffffff',
@@ -173,15 +163,7 @@ const response = await fetch("http://localhost:7002/api/checkout-pages", {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-1">Product Image</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageUpload}
-                  className="w-full p-2 border rounded-md"
-                />
-              </div>
+        
 
               <div>
                 <label className="block text-sm font-medium mb-1">Product Name</label>
@@ -328,13 +310,7 @@ const response = await fetch("http://localhost:7002/api/checkout-pages", {
                 {design.pageTitle || 'Checkout Page'}
               </h1>
               
-              {design.productImage && (
-                <img 
-                  src={design.productImage} 
-                  alt="Product" 
-                  className="w-full h-48 object-cover mb-4 rounded" 
-                />
-              )}
+              
               
               <h2 className="text-xl font-semibold mb-2">{design.productName || 'Product Name'}</h2>
               <p className="text-lg mb-4">${design.productPrice || '0.00'}</p>

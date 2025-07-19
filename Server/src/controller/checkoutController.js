@@ -1,3 +1,77 @@
+// const imagekit = require("../config/imageKit");
+// const CheckoutPage = require("../models/CheckoutModule");
+// const User = require("../models/userModule");
+// const asyncHandler = require("express-async-handler");
+
+
+// const createCheckoutPage = asyncHandler(async (req, res) => {
+//   const {
+//     title,
+//     product,
+//     buttonText,
+//     colors,
+//     font,
+//     formFields,
+//     utmParameters,
+//     productimage,
+//   } = req.body;
+
+  
+//   if (!product || !product.name || !product.price) {
+//     return res.status(400).json({ message: "Product name and price are required" });
+//   }
+
+//   let uploadedImages = [];
+  
+
+//   if (productimage && Array.isArray(productimage)) {
+//     try {
+    
+//       for (const image of productimage) {
+        
+//         if (image.startsWith('data:image')) {
+//           const result = await imagekit.upload({
+//             file: image,
+//             fileName: `${Date.now()}_${product.name.replace(/\s+/g, '_')}.jpg`,
+//             folder: "/checkout_pages/products",
+//           });
+//           uploadedImages.push(result.url);
+//         } else {
+          
+//           uploadedImages.push(image);
+//         }
+//       }
+//     } catch (error) {
+//       console.error("Image upload error:", error);
+//       return res.status(500).json({ message: "Error uploading product images" });
+//     }
+//   }
+
+//  const checkoutPage = await CheckoutPage.create({
+//   owner: req.user.id,
+//   title,
+//   productname: product.name,
+//   productprice: product.price,
+//   productimage: uploadedImages.length > 0 ? uploadedImages : [],
+//   buttonText: buttonText || "Buy Now",
+//   colors: colors || {
+//     primary: "#4f46e5",
+//     secondary: "#ffffff",
+//   },
+//   font: font || "Arial",
+//   formFields: formFields || {
+//     name: true,
+//     email: true,
+//     phone: true,
+//     address: false,
+//   },
+//   utmParameters: utmParameters || {},
+// });
+
+//   res.status(201).json(checkoutPage);
+// });
+
+
 const imagekit = require("../config/imageKit");
 const CheckoutPage = require("../models/CheckoutModule");
 const User = require("../models/userModule");
@@ -47,28 +121,26 @@ const createCheckoutPage = asyncHandler(async (req, res) => {
     }
   }
 
-  const checkoutPage = await CheckoutPage.create({
-    owner: req.user.id,
-    title,
-    product: {
-      name: product.name,
-      price: product.price,
-      image: uploadedImages.length > 0 ? uploadedImages : undefined,
-    },
-    buttonText: buttonText || "Buy Now",
-    colors: colors || {
-      primary: "#4f46e5",
-      secondary: "#ffffff",
-    },
-    font: font || "Arial",
-    formFields: formFields || {
-      name: true,
-      email: true,
-      phone: true,
-      address: false,
-    },
-    utmParameters: utmParameters || {},
-  });
+ const checkoutPage = await CheckoutPage.create({
+  owner: req.user.id,
+  title,
+  productname: product.name,
+  productprice: product.price,
+  productimage: uploadedImages.length > 0 ? uploadedImages : [],
+  buttonText: buttonText || "Buy Now",
+  colors: colors || {
+    primary: "#4f46e5",
+    secondary: "#ffffff",
+  },
+  font: font || "Arial",
+  formFields: formFields || {
+    name: true,
+    email: true,
+    phone: true,
+    address: false,
+  },
+  utmParameters: utmParameters || {},
+});
 
   res.status(201).json(checkoutPage);
 });
@@ -152,7 +224,8 @@ const updateCheckoutPage = asyncHandler(async (req, res) => {
 
   const {
     title,
-    product,
+    productname,
+    productprice,
     buttonText,
     colors,
     font,
@@ -162,15 +235,14 @@ const updateCheckoutPage = asyncHandler(async (req, res) => {
   } = req.body;
 
   let uploadedImages = [];
-  
+
   if (productimage && Array.isArray(productimage)) {
     try {
-      // Upload each new image to ImageKit
       for (const image of productimage) {
         if (image.startsWith('data:image')) {
           const result = await imagekit.upload({
             file: image,
-            fileName: `${Date.now()}_${product?.name?.replace(/\s+/g, '_') || 'product'}.jpg`,
+            fileName: `${Date.now()}_${productname?.replace(/\s+/g, '_') || 'product'}.jpg`,
             folder: "/checkout_pages/products",
           });
           uploadedImages.push(result.url);
@@ -184,28 +256,24 @@ const updateCheckoutPage = asyncHandler(async (req, res) => {
     }
   }
 
+  // Flat field updates
   if (title) checkoutPage.title = title;
+  if (productname) checkoutPage.productname = productname;
+  if (productprice !== undefined) checkoutPage.productprice = productprice;
+  if (uploadedImages.length > 0) checkoutPage.productimage = uploadedImages;
   if (buttonText) checkoutPage.buttonText = buttonText;
   if (colors) checkoutPage.colors = colors;
   if (font) checkoutPage.font = font;
   if (formFields) checkoutPage.formFields = formFields;
   if (utmParameters) checkoutPage.utmParameters = utmParameters;
 
-  // Update product fields if they exist
-  if (product) {
-    if (product.name) checkoutPage.product.name = product.name;
-    if (product.price) checkoutPage.product.price = product.price;
-    // Only update images if new ones were uploaded
-    if (uploadedImages.length > 0) {
-      checkoutPage.product.image = uploadedImages;
-    }
-  }
   checkoutPage.updatedAt = Date.now();
 
   const updatedCheckoutPage = await checkoutPage.save();
 
   res.status(200).json(updatedCheckoutPage);
 });
+
 
 const deleteCheckoutPage = asyncHandler(async (req, res) => {
   const checkoutPage = await CheckoutPage.findOneAndDelete({

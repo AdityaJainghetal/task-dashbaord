@@ -6,7 +6,6 @@ import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import CheckoutBuilder from "./pages/CheckoutBuilder";
 import CheckoutPages from "./pages/Checkoutdisplay";
-import Checkoutpage from "./pages/Checkoutpage";
 import CheckoutEditPage from "./pages/CheckoutEditPage";
 import CheckoutViewPage from "./pages/Checkoutdisplay";
 import Navbar from "./Navbar/Navbar"; // Using a single navbar component
@@ -18,7 +17,7 @@ const App = () => {
       <Router>
         <Routes>
           {/* Public routes without navbar */}
-          <Route index element={<Login/>}/>
+          <Route index element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
@@ -31,16 +30,16 @@ const App = () => {
               </NavbarWrapper>
             }
           />
-        <Route
-  path="/userdashboard"
-  element={
-    <NavbarWrapper>
-      <Dashboard />
-    </NavbarWrapper>
-  }
->
-  <Route index element={<CheckoutPages />} />
-</Route>
+          <Route
+            path="/userdashboard"
+            element={
+              <NavbarWrapper>
+                <Dashboard />
+              </NavbarWrapper>
+            }
+          >
+            <Route index element={<CheckoutPages />} />
+          </Route>
 
           <Route
             path="/checkout"
