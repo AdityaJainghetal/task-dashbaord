@@ -1,51 +1,55 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-    role: 'user' 
+    username: "",
+    password: "",
+    role: "user",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     if (!formData.username || !formData.password) {
-      setError('Please fill all fields');
+      setError("Please fill all fields");
       setLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:7002/api/auth/register', formData, {
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await axios.post(
+        "http://localhost:7002/api/auth/register",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
-      });
+      );
 
       setSuccess(true);
       setTimeout(() => {
-        navigate('/login');
+        navigate("/login");
       }, 2000);
-
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 'Registration failed. Please try again.';
+      const errorMessage =
+        err.response?.data?.message || "Registration failed. Please try again.";
       setError(errorMessage);
     } finally {
       setLoading(false);
@@ -57,13 +61,28 @@ const Register = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-center">
           <div className="text-green-500 mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-16 w-16 mx-auto"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
             </svg>
           </div>
           <h2 className="text-2xl font-bold mb-2">Registration Successful!</h2>
-          <p className="text-gray-600 mb-4">You will be redirected to login page shortly.</p>
-          <Link to="/login" className="text-blue-600 hover:underline">Go to Login now</Link>
+          <p className="text-gray-600 mb-4">
+            You will be redirected to login page shortly.
+          </p>
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Go to Login now
+          </Link>
         </div>
       </div>
     );
@@ -72,8 +91,10 @@ const Register = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">Register</h1>
-        
+        <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
+          Register
+        </h1>
+
         {error && (
           <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-md">
             {error}
@@ -130,15 +151,17 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className={`w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+            className={`w-full py-2 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+              loading ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
-            {loading ? 'Registering...' : 'Register'}
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
 
         <div className="mt-4 text-center">
           <p className="text-gray-600">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Link to="/login" className="text-blue-600 hover:underline">
               Login
             </Link>

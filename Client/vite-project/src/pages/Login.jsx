@@ -1,8 +1,7 @@
-
-
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../pages/AuthContext";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +12,7 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { login, loginAdmin } = useContext(AuthContext); // Use AuthContext
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,51 +22,47 @@ const LoginPage = () => {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
+    try {
+      const response = await axios.post(
+        "http://localhost:7002/api/auth/login",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setError("");
+      console.log("Login response:", response.data); // Debug response
 
-  try {
-    const response = await axios.post(
-      "http://localhost:7002/api/auth/login",
-      formData,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
+      // Adjust based on actual API response structure
+      const { token, user } = response.data; // Assuming response is { token, user: { _id, username, role, ... } }
+
+      if (!user || !token) {
+        throw new Error("Invalid response: User or token missing");
       }
-    );
 
-    console.log("Login response:", response.data); // <-- check this!
-
-    // Adjust based on what the log shows:
-    const { token, user } = response.data; // or response.data.data
-
-    if (!user) {
-      throw new Error("User info not found in response.");
+      // Store in localStorage and update AuthContext
+      const userData = { ...user, token }; // Combine user and token
+      if (user.role === "admin") {
+        loginAdmin(userData);
+        navigate("/admindashboard");
+      } else {
+        login(userData);
+        navigate("/display");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.response?.data?.message || err.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
-
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(user));
-
-    
-
-    if (user.role === "admin") {
-      navigate("/admindashboard");
-    } else {
-      navigate("/display");
-    }
-  } catch (err) {
-    console.error(err);
-    setError(err.response?.data?.message || err.message || "Login failed");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -92,7 +88,7 @@ const handleSubmit = async (e) => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-_COOKIE3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -139,7 +135,7 @@ const handleSubmit = async (e) => {
           </button>
         </form>
 
-        <div className="mt-4 text-center">
+        <div classNameSonyEricsson className="mt-4 text-center">
           <p className="text-gray-600">
             Don't have an account?{" "}
             <Link to="/register" className="text-blue-600 hover:underline">

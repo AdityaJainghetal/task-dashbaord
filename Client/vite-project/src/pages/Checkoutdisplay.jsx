@@ -7,11 +7,12 @@
 //   const [loading, setLoading] = useState(true);
 //   const [error, setError] = useState(null);
 //   const [editingId, setEditingId] = useState(null);
+//   const [showPreview, setShowPreview] = useState(false);
+//   const [previewData, setPreviewData] = useState(null);
 //   const [editFormData, setEditFormData] = useState({
 //     title: "",
 //     productname: "",
 //     productprice: "",
-
 //     buttonText: "Buy Now",
 //     colors: {
 //       primary: "#3b82f6",
@@ -62,8 +63,9 @@
 //     }
 //   };
 
-//   const handlePreview = (id) => {
-//     navigate(`/preview/${id}`);
+//   const handlePreview = (checkout) => {
+//     setPreviewData(checkout);
+//     setShowPreview(true);
 //   };
 
 //   const handleEdit = (checkout) => {
@@ -184,6 +186,106 @@
 //       <h1 className="text-2xl font-bold text-gray-800 mb-6">
 //         Your Checkout Pages
 //       </h1>
+
+//       {/* Preview Modal */}
+//       {showPreview && previewData && (
+//         <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50 p-4">
+//           <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+//             <div className="p-6">
+//               <div className="flex justify-between items-center mb-4">
+//                 <h2 className="text-xl font-bold text-gray-800">
+//                   {previewData.title || "Checkout Page Preview"}
+//                 </h2>
+//                 <button
+//                   onClick={() => setShowPreview(false)}
+//                   className="text-gray-500 hover:text-gray-700"
+//                 >
+//                   ✕
+//                 </button>
+//               </div>
+
+//               {/* Preview Content */}
+//               <div
+//                 className="border rounded-lg p-6 mx-auto"
+//                 style={{
+//                   backgroundColor: previewData.colors?.secondary || "#ffffff",
+//                   fontFamily: previewData.font || "Arial",
+//                   maxWidth: "500px",
+//                 }}
+//               >
+//                 <h1
+//                   className="text-2xl font-bold mb-4"
+//                   style={{ color: previewData.colors?.primary || "#4f46e5" }}
+//                 >
+//                   {previewData.title || "Checkout Page"}
+//                 </h1>
+
+//                 <h2 className="text-xl font-semibold mb-2">
+//                   {previewData.productname || "Product Name"}
+//                 </h2>
+//                 <p className="text-lg mb-4">
+//                   ${previewData.productprice || "0.00"}
+//                 </p>
+
+//                 <div className="space-y-4">
+//                   {previewData.formFields?.name && (
+//                     <input
+//                       type="text"
+//                       placeholder="Name"
+//                       className="p-2 w-full border rounded-md"
+//                       style={{
+//                         borderColor: previewData.colors?.primary || "#4f46e5",
+//                       }}
+//                     />
+//                   )}
+
+//                   {previewData.formFields?.email && (
+//                     <input
+//                       type="email"
+//                       placeholder="Email"
+//                       className="p-2 w-full border rounded-md"
+//                       style={{
+//                         borderColor: previewData.colors?.primary || "#4f46e5",
+//                       }}
+//                     />
+//                   )}
+
+//                   {previewData.formFields?.phone && (
+//                     <input
+//                       type="tel"
+//                       placeholder="Phone"
+//                       className="p-2 w-full border rounded-md"
+//                       style={{
+//                         borderColor: previewData.colors?.primary || "#4f46e5",
+//                       }}
+//                     />
+//                   )}
+
+//                   {previewData.formFields?.address && (
+//                     <input
+//                       type="text"
+//                       placeholder="Address"
+//                       className="p-2 w-full border rounded-md"
+//                       style={{
+//                         borderColor: previewData.colors?.primary || "#4f46e5",
+//                       }}
+//                     />
+//                   )}
+
+//                   <button
+//                     className="w-full p-3 rounded-md text-white font-medium"
+//                     style={{
+//                       backgroundColor: previewData.colors?.primary || "#4f46e5",
+//                     }}
+//                   >
+//                     {previewData.buttonText || "Buy Now"}
+//                   </button>
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       )}
 
 //       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 //         {checkouts.map((checkout) => (
@@ -418,6 +520,7 @@
 //                     </p>
 //                   </div>
 //                 </div>
+
 //                 <div className="mb-4">
 //                   <h3 className="text-lg font-semibold mb-2 text-gray-700">
 //                     Colors
@@ -440,7 +543,6 @@
 //                   </div>
 //                 </div>
 
-//                 {/* Form Fields */}
 //                 <div className="mb-4">
 //                   <h3 className="text-lg font-semibold mb-2 text-gray-700">
 //                     Form Fields
@@ -523,7 +625,7 @@
 
 //                 <div className="flex space-x-4">
 //                   <button
-//                     onClick={() => handlePreview(checkout._id)}
+//                     onClick={() => handlePreview(checkout)}
 //                     className="px-4 py-2 bg-blue-100 text-blue-700 rounded-md hover:bg-blue-200 transition-colors"
 //                   >
 //                     Preview
@@ -554,6 +656,9 @@
 
 
 
+
+
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -576,10 +681,10 @@ const CheckoutViewPage = () => {
     },
     font: "Arial",
     formFields: {
-      name: true,
-      email: true,
-      phone: false,
-      address: false,
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
     },
     utmParameters: {
       source: "",
@@ -637,10 +742,10 @@ const CheckoutViewPage = () => {
         secondary: checkout.colors?.secondary || "#ffffff",
       },
       formFields: {
-        name: checkout.formFields?.name ?? true,
-        email: checkout.formFields?.email ?? true,
-        phone: checkout.formFields?.phone ?? false,
-        address: checkout.formFields?.address ?? false,
+        name: checkout.formFields?.name || "",
+        email: checkout.formFields?.email || "",
+        phone: checkout.formFields?.phone || "",
+        address: checkout.formFields?.address || "",
       },
       utmParameters: checkout.utmParameters || {
         source: "",
@@ -653,7 +758,7 @@ const CheckoutViewPage = () => {
   };
 
   const handleEditChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
 
     if (name.startsWith("colors.")) {
       const colorField = name.split(".")[1];
@@ -670,7 +775,7 @@ const CheckoutViewPage = () => {
         ...prev,
         formFields: {
           ...prev.formFields,
-          [fieldName]: type === "checkbox" ? checked : value,
+          [fieldName]: value,
         },
       }));
     } else if (name.startsWith("utmParameters.")) {
@@ -685,7 +790,7 @@ const CheckoutViewPage = () => {
     } else {
       setEditFormData((prev) => ({
         ...prev,
-        [name]: type === "checkbox" ? checked : value,
+        [name]: value,
       }));
     }
   };
@@ -745,7 +850,7 @@ const CheckoutViewPage = () => {
 
       {/* Preview Modal */}
       {showPreview && previewData && (
-        <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
@@ -788,46 +893,50 @@ const CheckoutViewPage = () => {
                     <input
                       type="text"
                       placeholder="Name"
+                      value={previewData.formFields.name}
+                      readOnly
                       className="p-2 w-full border rounded-md"
                       style={{
                         borderColor: previewData.colors?.primary || "#4f46e5",
                       }}
                     />
                   )}
-
                   {previewData.formFields?.email && (
                     <input
                       type="email"
                       placeholder="Email"
+                      value={previewData.formFields.email}
+                      readOnly
                       className="p-2 w-full border rounded-md"
                       style={{
                         borderColor: previewData.colors?.primary || "#4f46e5",
                       }}
                     />
                   )}
-
                   {previewData.formFields?.phone && (
                     <input
                       type="tel"
                       placeholder="Phone"
+                      value={previewData.formFields.phone}
+                      readOnly
                       className="p-2 w-full border rounded-md"
                       style={{
                         borderColor: previewData.colors?.primary || "#4f46e5",
                       }}
                     />
                   )}
-
                   {previewData.formFields?.address && (
                     <input
                       type="text"
                       placeholder="Address"
+                      value={previewData.formFields.address}
+                      readOnly
                       className="p-2 w-full border rounded-md"
                       style={{
                         borderColor: previewData.colors?.primary || "#4f46e5",
                       }}
                     />
                   )}
-
                   <button
                     className="w-full p-3 rounded-md text-white font-medium"
                     style={{
@@ -881,7 +990,7 @@ const CheckoutViewPage = () => {
                     Product Price
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     name="productprice"
                     value={editFormData.productprice}
                     onChange={handleEditChange}
@@ -965,47 +1074,22 @@ const CheckoutViewPage = () => {
                   <label className="block text-gray-700 mb-2">
                     Form Fields
                   </label>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        name="formFields.name"
-                        checked={editFormData.formFields.name}
-                        onChange={handleEditChange}
-                        className="mr-2"
-                      />
-                      <span>Name</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        name="formFields.email"
-                        checked={editFormData.formFields.email}
-                        onChange={handleEditChange}
-                        className="mr-2"
-                      />
-                      <span>Email</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        name="formFields.phone"
-                        checked={editFormData.formFields.phone}
-                        onChange={handleEditChange}
-                        className="mr-2"
-                      />
-                      <span>Phone</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        name="formFields.address"
-                        checked={editFormData.formFields.address}
-                        onChange={handleEditChange}
-                        className="mr-2"
-                      />
-                      <span>Address</span>
-                    </div>
+                  <div className="space-y-2">
+                    {Object.entries(editFormData.formFields).map(([field]) => (
+                      <div key={field}>
+                        <label className="block text-gray-700 mb-1">
+                          {field.charAt(0).toUpperCase() + field.slice(1)}
+                        </label>
+                        <input
+                          type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
+                          name={`formFields.${field}`}
+                          value={editFormData.formFields[field]}
+                          onChange={handleEditChange}
+                          className="w-full p-2 border rounded"
+                          placeholder={`Enter ${field}`}
+                        />
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -1071,7 +1155,7 @@ const CheckoutViewPage = () => {
                     <p>
                       <span className="font-medium text-gray-700">Price:</span>
                       <span className="ml-2 text-gray-900">
-                        {checkout.productprice || "Not specified"}
+                        ${checkout.productprice || "0.00"}
                       </span>
                     </p>
                   </div>
@@ -1103,43 +1187,17 @@ const CheckoutViewPage = () => {
                   <h3 className="text-lg font-semibold mb-2 text-gray-700">
                     Form Fields
                   </h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={checkout.formFields.name}
-                        readOnly
-                        className="mr-2"
-                      />
-                      <span>Name</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={checkout.formFields.email}
-                        readOnly
-                        className="mr-2"
-                      />
-                      <span>Email</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={checkout.formFields.phone}
-                        readOnly
-                        className="mr-2"
-                      />
-                      <span>Phone</span>
-                    </div>
-                    <div className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={checkout.formFields.address}
-                        readOnly
-                        className="mr-2"
-                      />
-                      <span>Address</span>
-                    </div>
+                  <div className="space-y-2">
+                    {Object.entries(checkout.formFields).map(([field, value]) => (
+                      <p key={field} className="mb-2">
+                        <span className="font-medium text-gray-700">
+                          {field.charAt(0).toUpperCase() + field.slice(1)}:
+                        </span>
+                        <span className="ml-2 text-gray-900">
+                          {value || "Not set"}
+                        </span>
+                      </p>
+                    ))}
                   </div>
                 </div>
 
@@ -1168,7 +1226,7 @@ const CheckoutViewPage = () => {
                       ([key, value]) => (
                         <p key={key} className="mb-2">
                           <span className="font-medium text-gray-700">
-                            {key}:
+                            {key.charAt(0).toUpperCase() + key.slice(1)}:
                           </span>
                           <span className="ml-2 text-gray-900">
                             {value || "Not set"}

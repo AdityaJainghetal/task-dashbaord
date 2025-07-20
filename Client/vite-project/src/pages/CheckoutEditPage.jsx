@@ -1,65 +1,67 @@
 // CheckoutEditPage.js
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CheckoutEditPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [checkout, setCheckout] = useState({
-    title: '',
-    productname: '',
+    title: "",
+    productname: "",
     productprice: 0,
     productimages: [],
-    buttonText: 'Buy Now',
+    buttonText: "Buy Now",
     colors: {
-      primary: '#4f46e5',
-      secondary: '#ffffff'
+      primary: "#4f46e5",
+      secondary: "#ffffff",
     },
-    font: 'Arial',
+    font: "Arial",
     formFields: {
       name: true,
       email: true,
       phone: true,
-      address: false
-    }
+      address: false,
+    },
   });
 
-  console.log(checkout,"checkoutcheckout")
+  console.log(checkout, "checkoutcheckout");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchCheckout = async () => {
       try {
-        const response = await axios.get(`http://localhost:7002/admin/checkout/${id}`);
+        const response = await axios.get(
+          `http://localhost:7002/admin/checkout/${id}`
+        );
         setCheckout(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Failed to fetch checkout page');
+        setError("Failed to fetch checkout page");
         setLoading(false);
       }
     };
-    
+
     fetchCheckout();
   }, [id]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    
-    if (name.includes('.')) {
-      const [parent, child] = name.split('.');
-      setCheckout(prev => ({
+
+    if (name.includes(".")) {
+      const [parent, child] = name.split(".");
+      setCheckout((prev) => ({
         ...prev,
         [parent]: {
           ...prev[parent],
-          [child]: type === 'checkbox' ? checked : value
-        }
+          [child]: type === "checkbox" ? checked : value,
+        },
       }));
     } else {
-      setCheckout(prev => ({
+      setCheckout((prev) => ({
         ...prev,
-        [name]: type === 'checkbox' ? checked : value
+        [name]: type === "checkbox" ? checked : value,
       }));
     }
   };
@@ -67,24 +69,24 @@ const CheckoutEditPage = () => {
   const handleImageChange = (e, index) => {
     const newImages = [...checkout.productimages];
     newImages[index] = e.target.value;
-    setCheckout(prev => ({
+    setCheckout((prev) => ({
       ...prev,
-      productimages: newImages
+      productimages: newImages,
     }));
   };
 
   const addImageField = () => {
-    setCheckout(prev => ({
+    setCheckout((prev) => ({
       ...prev,
-      productimages: [...prev.productimages, '']
+      productimages: [...prev.productimages, ""],
     }));
   };
 
   const removeImageField = (index) => {
     const newImages = checkout.productimages.filter((_, i) => i !== index);
-    setCheckout(prev => ({
+    setCheckout((prev) => ({
       ...prev,
-      productimages: newImages
+      productimages: newImages,
     }));
   };
 
@@ -94,7 +96,7 @@ const CheckoutEditPage = () => {
       await axios.put(`http://localhost:7002/admin/checkout/${id}`, checkout);
       navigate(`/admin/checkout/${id}`);
     } catch (err) {
-      setError('Failed to update checkout page');
+      setError("Failed to update checkout page");
     }
   };
 
@@ -104,13 +106,15 @@ const CheckoutEditPage = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Edit Checkout Page</h1>
-      
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-white shadow-md rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Basic Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Title
+              </label>
               <input
                 type="text"
                 name="title"
@@ -120,7 +124,9 @@ const CheckoutEditPage = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Button Text</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Button Text
+              </label>
               <input
                 type="text"
                 name="buttonText"
@@ -136,7 +142,9 @@ const CheckoutEditPage = () => {
           <h2 className="text-xl font-semibold mb-4">Product Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Product Name
+              </label>
               <input
                 type="text"
                 name="productname"
@@ -146,7 +154,9 @@ const CheckoutEditPage = () => {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Product Price</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Product Price
+              </label>
               <input
                 type="number"
                 name="productprice"
@@ -158,7 +168,9 @@ const CheckoutEditPage = () => {
           </div>
 
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Product Images</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Product Images
+            </label>
             {checkout.productimages.map((img, index) => (
               <div key={index} className="flex items-center mb-2">
                 <input
@@ -190,7 +202,9 @@ const CheckoutEditPage = () => {
           <h2 className="text-xl font-semibold mb-4">Design Settings</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Primary Color</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Primary Color
+              </label>
               <div className="flex items-center">
                 <input
                   type="color"
@@ -203,7 +217,9 @@ const CheckoutEditPage = () => {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Secondary Color</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Secondary Color
+              </label>
               <div className="flex items-center">
                 <input
                   type="color"
@@ -216,7 +232,9 @@ const CheckoutEditPage = () => {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Font</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Font
+              </label>
               <select
                 name="font"
                 value={checkout.font}
