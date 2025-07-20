@@ -33,7 +33,7 @@ const CheckoutEditPage = () => {
     const fetchCheckout = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7002/admin/checkout/${id}`
+          `https://task-dashbaord.onrender.com/admin/checkout/${id}`
         );
         setCheckout(response.data);
         setLoading(false);
@@ -93,7 +93,10 @@ const CheckoutEditPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:7002/admin/checkout/${id}`, checkout);
+      await axios.put(
+        `https://task-dashbaord.onrender.com/admin/checkout/${id}`,
+        checkout
+      );
       navigate(`/admin/checkout/${id}`);
     } catch (err) {
       setError("Failed to update checkout page");

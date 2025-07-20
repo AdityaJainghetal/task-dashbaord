@@ -13,7 +13,7 @@ const CheckoutViewPage = () => {
     const fetchCheckout = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:7002/admin/checkout/${id}`
+          `https://task-dashbaord.onrender.com/admin/checkout/${id}`
         );
         setCheckout(response.data);
         setLoading(false);

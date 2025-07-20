@@ -65,7 +65,7 @@
 // //       const token = localStorage.getItem("token");
 
 // //       const response = await fetch(
-// //         "http://localhost:7002/api/checkout-pages",
+// //         "https://task-dashbaord.onrender.com/api/checkout-pages",
 // //         {
 // //           method: "POST",
 // //           headers: {
@@ -802,7 +802,6 @@
 
 // export default CheckoutBuilder;
 
-
 // import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 
@@ -875,7 +874,7 @@
 //       }
 
 //       const response = await fetch(
-//         "http://localhost:7002/api/checkout-pages", // Fixed typo in URL
+//         "https://task-dashbaord.onrender.com/api/checkout-pages", // Fixed typo in URL
 //         {
 //           method: "POST",
 //           headers: {
@@ -1213,12 +1212,6 @@
 
 // export default CheckoutBuilder;
 
-
-
-
-
-
-
 // import { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 
@@ -1291,7 +1284,7 @@
 //       }
 
 //       const response = await fetch(
-//         "http://localhost:7002/api/checkout-pages",
+//         "https://task-dashbaord.onrender.com/api/checkout-pages",
 //         {
 //           method: "POST",
 //           headers: {
@@ -1629,11 +1622,6 @@
 
 // export default CheckoutBuilder;
 
-
-
-
-
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -1707,7 +1695,7 @@ const CheckoutBuilder = () => {
       }
 
       const response = await fetch(
-        "http://localhost:7002/api/checkout-pages",
+        "https://task-dashbaord.onrender.com/api/checkout-pages",
         {
           method: "POST",
           headers: {
@@ -1911,7 +1899,13 @@ const CheckoutBuilder = () => {
                         {field.charAt(0).toUpperCase() + field.slice(1)}
                       </label>
                       <input
-                        type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
+                        type={
+                          field === "email"
+                            ? "email"
+                            : field === "phone"
+                            ? "tel"
+                            : "text"
+                        }
                         name={field}
                         value={design.formFields[field]}
                         onChange={handleFormFieldChange}
@@ -2005,7 +1999,8 @@ const CheckoutBuilder = () => {
                   />
                 )}
                 {design.formFields.phone && (
-                  <input type="tel"
+                  <input
+                    type="tel"
                     placeholder="Phone"
                     value={design.formFields.phone}
                     readOnly

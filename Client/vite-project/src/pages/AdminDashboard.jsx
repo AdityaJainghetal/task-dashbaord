@@ -59,7 +59,7 @@
 //   });
 //   const navigate = useNavigate();
 
-//   const API_BASE = "http://localhost:7002/admin";
+//   const API_BASE = "https://task-dashbaord.onrender.com/admin";
 
 //   useEffect(() => {
 //     const fetchData = async () => {
@@ -829,8 +829,6 @@
 
 // export default AdminDashboard;
 
-
-
 import { useState, useEffect } from "react";
 import {
   FiEye,
@@ -892,7 +890,7 @@ const AdminDashboard = () => {
   });
   const navigate = useNavigate();
 
-  const API_BASE = "http://localhost:7002/admin";
+  const API_BASE = "https://task-dashbaord.onrender.com/admin";
 
   useEffect(() => {
     const fetchData = async () => {
@@ -1196,7 +1194,8 @@ const AdminDashboard = () => {
                     style={{
                       borderColor: previewPage.colors?.primary || "#4f46e5",
                     }}
-                  />               )}
+                  />
+                )}
                 {previewPage.formFields?.email && (
                   <input
                     type="email"
@@ -1399,7 +1398,13 @@ const AdminDashboard = () => {
                             {field.charAt(0).toUpperCase() + field.slice(1)}
                           </label>
                           <input
-                            type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
+                            type={
+                              field === "email"
+                                ? "email"
+                                : field === "phone"
+                                ? "tel"
+                                : "text"
+                            }
                             name={`formFields.${field}`}
                             value={formData.formFields[field]}
                             onChange={handleFormChange}
@@ -1708,7 +1713,10 @@ const AdminDashboard = () => {
                       <div className="text-sm text-gray-900">
                         {Object.entries(page.formFields || {})
                           .filter(([_, value]) => value)
-                          .map(([field]) => field.charAt(0).toUpperCase() + field.slice(1))
+                          .map(
+                            ([field]) =>
+                              field.charAt(0).toUpperCase() + field.slice(1)
+                          )
                           .join(", ") || "No fields"}
                       </div>
                     </td>

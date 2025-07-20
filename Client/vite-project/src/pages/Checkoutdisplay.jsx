@@ -46,7 +46,7 @@
 //       const user = JSON.parse(localStorage.getItem("user"));
 
 //       const response = await axios.get(
-//         `http://localhost:7002/api/checkout-pages/user/${user._id}`,
+//         `https://task-dashbaord.onrender.com/api/checkout-pages/user/${user._id}`,
 //         {
 //           headers: {
 //             Authorization: `Bearer ${token}`,
@@ -138,7 +138,7 @@
 //     try {
 //       const token = localStorage.getItem("token");
 //       await axios.put(
-//         `http://localhost:7002/api/checkout-pages/${id}`,
+//         `https://task-dashbaord.onrender.com/api/checkout-pages/${id}`,
 //         editFormData,
 //         {
 //           headers: {
@@ -158,7 +158,7 @@
 //     if (window.confirm("Are you sure you want to delete this checkout page?")) {
 //       try {
 //         const token = localStorage.getItem("token");
-//         await axios.delete(`http://localhost:7002/api/checkout-pages/${id}`, {
+//         await axios.delete(`https://task-dashbaord.onrender.com/api/checkout-pages/${id}`, {
 //           headers: {
 //             Authorization: `Bearer ${token}`,
 //           },
@@ -654,11 +654,6 @@
 
 // export default CheckoutViewPage;
 
-
-
-
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -707,7 +702,7 @@ const CheckoutViewPage = () => {
       const user = JSON.parse(localStorage.getItem("user"));
 
       const response = await axios.get(
-        `http://localhost:7002/api/checkout-pages/user/${user._id}`,
+        `https://task-dashbaord.onrender.com/api/checkout-pages/user/${user._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -799,7 +794,7 @@ const CheckoutViewPage = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        `http://localhost:7002/api/checkout-pages/${id}`,
+        `https://task-dashbaord.onrender.com/api/checkout-pages/${id}`,
         editFormData,
         {
           headers: {
@@ -819,11 +814,14 @@ const CheckoutViewPage = () => {
     if (window.confirm("Are you sure you want to delete this checkout page?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:7002/api/checkout-pages/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await axios.delete(
+          `https://task-dashbaord.onrender.com/api/checkout-pages/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         fetchCheckoutData();
       } catch (error) {
         console.error("Error deleting checkout page", error);
@@ -1081,7 +1079,13 @@ const CheckoutViewPage = () => {
                           {field.charAt(0).toUpperCase() + field.slice(1)}
                         </label>
                         <input
-                          type={field === "email" ? "email" : field === "phone" ? "tel" : "text"}
+                          type={
+                            field === "email"
+                              ? "email"
+                              : field === "phone"
+                              ? "tel"
+                              : "text"
+                          }
                           name={`formFields.${field}`}
                           value={editFormData.formFields[field]}
                           onChange={handleEditChange}
@@ -1188,16 +1192,18 @@ const CheckoutViewPage = () => {
                     Form Fields
                   </h3>
                   <div className="space-y-2">
-                    {Object.entries(checkout.formFields).map(([field, value]) => (
-                      <p key={field} className="mb-2">
-                        <span className="font-medium text-gray-700">
-                          {field.charAt(0).toUpperCase() + field.slice(1)}:
-                        </span>
-                        <span className="ml-2 text-gray-900">
-                          {value || "Not set"}
-                        </span>
-                      </p>
-                    ))}
+                    {Object.entries(checkout.formFields).map(
+                      ([field, value]) => (
+                        <p key={field} className="mb-2">
+                          <span className="font-medium text-gray-700">
+                            {field.charAt(0).toUpperCase() + field.slice(1)}:
+                          </span>
+                          <span className="ml-2 text-gray-900">
+                            {value || "Not set"}
+                          </span>
+                        </p>
+                      )
+                    )}
                   </div>
                 </div>
 

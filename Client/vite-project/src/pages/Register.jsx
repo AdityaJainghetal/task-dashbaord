@@ -34,7 +34,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:7002/api/auth/register",
+        "https://task-dashbaord.onrender.com/api/auth/register",
         formData,
         {
           headers: {
